@@ -1,9 +1,9 @@
 # app/tools/executor.py
-from fastmcp import MCP
+from fastmcp import FastMCP
 from app.services.tripletex_client import TripletexClient
 from app.schemas.solve import PlanStep
 
-mcp = MCP()
+mcp = FastMCP("tripeltex-agent")
 
 # ----------------------------
 # MCP tools (each calls Tripletex API)
