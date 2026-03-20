@@ -4,8 +4,8 @@ import asyncio
 from typing import List, Optional
 from app.agent.parser import parse_prompt  # your LLM parsing function
 from app.agent.planner import create_plan   # your LLM planning function
-from app.tools.executor import execute_step # deterministic MCP/Tripletex executor
-from app.utils.validation import validate_state  # optional final validation
+from app.agent.executor import execute_step # deterministic MCP/Tripletex executor
+from app.agent.validation import validate_state  # optional final validation
 
 # Type hint for state
 StateDict = dict
