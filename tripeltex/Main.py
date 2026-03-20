@@ -21,3 +21,7 @@ async def solve(req: SolveRequest):
         return {"status": "completed"}
     except Exception as e:
         return {"status": "failed", "error": str(e)}
+
+@app.get("/")
+async def root():
+    return {"message" : "Hello World"}
