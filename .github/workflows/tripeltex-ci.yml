@@ -1,0 +1,58 @@
+name: Tripeltex CI
+
+on:
+  pull_request:
+    paths:
+      - 'tripeltex/**'
+      - '.github/workflows/tripeltex-ci.yml'
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'tripeltex/**'
+      - '.github/workflows/tripeltex-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Python checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tripeltex
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tripeltex/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pytest
+
+      - name: Compile Python source
+        run: python -m compileall .
+
+      - name: Run smoke imports
+        run: python -c "from Main import app; print(app.title or 'Tripeltex app ready')"
+
+      - name: Run tests
+        run: pytest -q
+
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build container image
+        run: docker build -t tripeltex-ci ./tripeltex
